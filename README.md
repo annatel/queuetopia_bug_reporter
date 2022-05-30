@@ -18,10 +18,10 @@ end
 To config, add the code below in the config/runtime.exs file.
 ```elixir
 config :queuetopia_bug_reporter,
-    bugs_email_from_address: System.fetch_env!("BUGS_EMAIL_FROM_ADDRESS"),
-    bugs_email_to_address: System.fetch_env!("BUGS_EMAIL_TO_ADDRESS"),
-    min_job_attempts_for_email:
-      System.get_env("MIN_JOB_ATTEMPTS_FOR_EMAIL", "1") |> String.to_integer()
+    from_email_address: System.fetch_env!("FROM_EMAIL_ADDRESS"),
+    to_email_address: System.fetch_env!("TO_EMAIL_ADDRESS"),
+    min_job_attempts_for_alert:
+      System.get_env("MIN_JOB_ATTEMPTS_FOR_ALERT", "1") |> String.to_integer()
 
 config :queuetopia_bug_reporter, QueuetopiaBugReporter.Mailer,
   adapter: Swoosh.Adapters.SMTP,
