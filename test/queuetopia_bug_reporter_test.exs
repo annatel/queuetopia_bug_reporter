@@ -4,29 +4,39 @@ defmodule QueuetopiaBugReporterTest do
   import QueuetopiaBugReporter.Factory
   import Swoosh.TestAssertions
 
-  test "handle_failed_job!" do
-    Application.put_all_env(
-      queuetopia_bug_reporter: [
-        bugs_email_from_address: "bugs_email_from_address@queuetopia_bug_reporter.com",
-        bugs_email_to_address: "bugs_email_to_address@queuetopia_bug_reporter.com",
-        min_job_attempts_for_email: 2
-      ]
-    )
+  describe "handle_failed_job!/2" do
+    test "interspace alerts with job attempts up to max_job_attempts_to_interspace_alert" do
+      Application.put_all_env(
+        queuetopia_bug_reporter: [
+          min_job_attempts_for_alert: 1,
+          alert_spacing: 5,
+          max_job_attempts_to_interspace_alert: 6
+        ]
+      )
 
-    QueuetopiaBugReporter.handle_failed_job!(build(:job, attempts: 1))
+      QueuetopiaBugReporter.handle_failed_job!(build(:job, attempts: 1))
+      assert_email_sent()
 
-    refute_email_sent()
+      QueuetopiaBugReporter.handle_failed_job!(build(:job, attempts: 2))
+      refute_email_sent()
 
-    job = build(:job, attempts: 2)
-    QueuetopiaBugReporter.handle_failed_job!(job)
+      QueuetopiaBugReporter.handle_failed_job!(build(:job, attempts: 3))
+      refute_email_sent()
 
-    assert_email_sent(
-      from: {"", "bugs_email_from_address@queuetopia_bug_reporter.com"},
-      to: {"", "bugs_email_to_address@queuetopia_bug_reporter.com"},
-      subject: "[#{job.scope} - Failed job (#{job.id})]"
-    )
+      QueuetopiaBugReporter.handle_failed_job!(build(:job, attempts: 4))
+      refute_email_sent()
 
-    QueuetopiaBugReporter.handle_failed_job!(build(:job, attempts: 3))
-    assert_email_sent()
+      QueuetopiaBugReporter.handle_failed_job!(build(:job, attempts: 5))
+      refute_email_sent()
+
+      QueuetopiaBugReporter.handle_failed_job!(build(:job, attempts: 6))
+      assert_email_sent()
+
+      QueuetopiaBugReporter.handle_failed_job!(build(:job, attempts: 7))
+      assert_email_sent()
+
+      QueuetopiaBugReporter.handle_failed_job!(build(:job, attempts: 8))
+      assert_email_sent()
+    end
   end
 end
