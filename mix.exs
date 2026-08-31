@@ -1,13 +1,13 @@
 defmodule QueuetopiaBugReporter.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.1.1"
 
   def project do
     [
       app: :queuetopia_bug_reporter,
       version: version(),
-      elixir: "~> 1.12",
+      elixir: "~> 1.18",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -28,7 +28,7 @@ defmodule QueuetopiaBugReporter.MixProject do
   defp deps do
     [
       {:hackney, "~> 1.9"},
-      {:queuetopia, "~> 2.3"},
+      {:queuetopia, "~> 2.3 or ~> 3.0"},
       {:swoosh, "~> 1.5"},
       {:gen_smtp, "~> 1.0"}
     ]
