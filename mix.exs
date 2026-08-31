@@ -7,7 +7,7 @@ defmodule QueuetopiaBugReporter.MixProject do
     [
       app: :queuetopia_bug_reporter,
       version: version(),
-      elixir: "~> 1.12",
+      elixir: "~> 1.18",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: Mix.compilers(),
       start_permanent: Mix.env() == :prod,
