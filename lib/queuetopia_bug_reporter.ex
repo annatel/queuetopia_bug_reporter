@@ -5,10 +5,10 @@ defmodule QueuetopiaBugReporter do
   @behaviour QueuetopiaBugReporter.Behaviour
 
   alias QueuetopiaBugReporter.Mailer
-  alias Queuetopia.Queue.Job
+  alias Queuetopia.Jobs.Job
 
   @impl true
-  @spec handle_failed_job!(Queuetopia.Queue.Job.t()) :: :ok
+  @spec handle_failed_job!(Queuetopia.Jobs.Job.t()) :: :ok
   def handle_failed_job!(%Job{} = job) do
     if needs_alert?(job) do
       Mailer.deliver_bug_email(Job.email_subject(job), Job.email_html_body(job))
