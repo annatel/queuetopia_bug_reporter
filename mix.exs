@@ -1,7 +1,7 @@
 defmodule QueuetopiaBugReporter.MixProject do
   use Mix.Project
 
-  @version "0.1.2"
+  @version "0.2.0"
 
   def project do
     [
@@ -28,7 +28,7 @@ defmodule QueuetopiaBugReporter.MixProject do
   defp deps do
     [
       {:hackney, "~> 1.9"},
-      {:queuetopia, ">= 2.3.0"},
+      {:queuetopia, "~> 6.0"},
       {:swoosh, "~> 1.5"},
       {:gen_smtp, "~> 1.0"}
     ]
